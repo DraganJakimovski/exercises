@@ -1,0 +1,161 @@
+Спој листи наизменично Problem 3 (3 / 4) 
+
+
+Дадени се две еднострано поврзани листи чии што јазли содржат по еден природен број. Треба да се спојат двете листи во една резултантна на тој начин што наизменично прво ќе се додаваат првите два јазли од првата листа во резултантната, па првите два од втората листа, па следните два од првата, па следните два од втората итн. Јазлите што ќе останат треба да се додадат на крај во резултантната листа, прво оние што останале од првата листа, потоа оние што останале од втората листа. 
+
+Во првиот ред од влезот се дадени броевите од кои се составени јазлите по редослед во првата листа, а во вториот ред броевите од кои се составени јазлите по редослед во втората листа. На излез треба да се испечатат јазлите по редослед во резултантната споена листа.
+
+Забелешка: Да се креира податочна структура еднострано поврзана листа и истата да се искористи во задачата.
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+ 
+ 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+ 
+public class SpecialSLLJoin {
+       
+       
+        public static void main(String[] args) throws IOException{
+       
+                BufferedReader stdin = new BufferedReader(new InputStreamReader(
+                                System.in));
+                String s = stdin.readLine();
+                int N = Integer.parseInt(s);
+                s = stdin.readLine();
+                String[] pomniza = s.split(" ");
+                SLL <Integer> lista1 = new SLL <Integer> ();
+                SLL <Integer> lista2 = new SLL <Integer> ();
+                SLL <Integer> spoeni;
+                for (int i = 0; i < N; i++) {
+                        lista1.insertLast(Integer.parseInt(pomniza[i]));
+                }
+ 
+                s = stdin.readLine();
+                N = Integer.parseInt(s);
+                s = stdin.readLine();
+                pomniza = s.split(" ");
+                for (int i = 0; i < N; i++) {
+                        lista2.insertLast(Integer.parseInt(pomniza[i]));
+                }
+               
+                spoeni = lista1.specialJoin(lista2);
+        System.out.println(spoeni);
+       
+               
+        }
+}
+ 
+ 
+class SLL <E extends Comparable<E>> {
+        Node <E> first;
+       
+        public SLL() {
+        // creates an empty list;
+                first = null;
+        }
+        public void insertFirst (E f)
+        {
+                Node <E> newFirst = new Node <E> (f);
+                newFirst.setNext(first);
+                first = newFirst;
+               
+        }
+        public void insertLast (E last)
+        {
+                Node <E> next  = first;
+                if(first == null)
+                {
+                        first = new Node <E> (last);
+                }
+                else
+                {
+                        while(next.getNext() != null)
+                        next = next.getNext();
+                        next.setNext(new Node <E> (last) );
+                }
+        }
+      
+        public SLL <E> specialJoin (SLL <E> join)
+        {
+                SLL <E> joined = new SLL <E> ();
+                Node <E> current1 = this.first;
+                Node <E> current2 = join.first;
+               
+                while(current1 != null&&current2 != null)
+                {
+                        joined.insertLast(current1.getValue());
+                        current1 = current1.getNext();
+                        if(current1 !=  null)
+                        {
+                                joined.insertLast(current1.getValue());
+                                current1 = current1.getNext();
+                        }
+                        joined.insertLast(current2.getValue());
+                        current2 = current2.getNext();
+                        if(current2 !=  null)
+                        {
+                                joined.insertLast(current2.getValue());
+                                current2 = current2.getNext();
+                        }
+                }
+                while (current1 != null)
+                {
+                                joined.insertLast(current1.getValue());
+                                current1 = current1.getNext();
+                }
+                while (current2 != null)
+                {
+                                joined.insertLast(current2.getValue());
+                                current2 = current2.getNext();
+       
+                }
+               
+               
+                return joined;
+        }
+        @Override
+        public String toString() {
+                String n = "";
+                Node <E> current = first;
+                while(current != null)
+                {
+                        n += current.getValue().toString();
+                        n += " ";
+                        current = current.getNext();
+                }
+                return n;
+        }
+}
+class Node <E> {
+        private E value;
+        private Node <E> next;
+       
+        public Node(E value)
+        {
+                this.next = null;
+                this.value = value;    
+        }
+        public void setNext(Node <E> next)
+        {
+                this.next =next;
+        }
+        public void setValue(E value)
+        {
+                this.value = value;
+        }
+        public Node <E> getNext()
+        {
+                return this.next;
+        }
+        public E getValue()
+        {
+                return this.value;
+        }
+               
+}
